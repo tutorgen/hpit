@@ -1,0 +1,61 @@
+
+Student Question Step Attribute Responses
+    /student/:sid/response/:qid
+        - POST {key:values}
+        - PUT {key:values}
+        - GET {key:values} for student on specific question
+
+    /student/:sid/response
+        - GET {key:values} for student
+
+    /question/:qid/response
+        - GET {key:values} for question responses
+
+    /response
+        - GET {key:values} for ALL questions responses
+
+Student
+    /student
+        - POST {arbitrary data} => guid
+
+    /student/:sid
+        - GET list of all arbitrary data about a student
+
+    /student/:sid/attribute
+        - POST {key:values}
+        - PUT {key:values}
+        - GET {key:values}
+
+    /student/:sid/attribute/:name
+        - GET value for specific key :name on student
+
+    /student/:sid/question/:qid/hint
+        - GET next hint for the student
+
+    /student/:sid/question/:qid/next
+        - GET next question student should answer
+
+Tutor
+
+    /question
+        - POST create a new question for the tutor
+        - GET all the questions
+
+    /question/:qid
+        - GET the specific question for the :qid
+
+    /question/:qid/step
+        - POST creates a new step for the question
+        - GET all the steps for a question
+
+    /question/:qid/step/:sid
+        - GET the specific question step for a question
+
+    /question/:qid/step/:sid/skill
+        - POST {key:values} creates a new skill/s for the question step
+        - GET {key:values} all skills tied to the step
+
+    /question/:qid/step/:sid/skill/:name
+        - PUT update the skill attribute for a specific :name skill
+        - GET the skill attribute for a specific question,step,skill combination
+
