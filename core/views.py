@@ -65,17 +65,15 @@ def student_attribute(request, id):
     if request.method == "DELETE":
         return HttpResponseBadReqeust()
 
+    try:
+        id = ObjectId(id)
+    except InvalidId as e:
+       return HttpResponseBadRequest(content_type="application/json")        
+
+    this_student = get_document_or_404(Student, pk=id)
+
     if request.method == "POST" or request.method == "PUT":
         data = json.loads(request.body)
-        
-        import pdb; pdb.set_trace()
-
-        try:
-            id = ObjectId(id)
-        except InvalidId as e:
-           return HttpResponseBadRequest(content_type="application/json")        
-        
-        this_student = get_document_or_404(Student, pk=id)
         
         if 'attributes' in data:
             for attr_name, attr_value in data['attributes'].items():
@@ -83,11 +81,16 @@ def student_attribute(request, id):
 
         this_student.save()
         return HttpResponse(this_student.to_json(), content_type="application/json")
+    elif request.method == "GET":
+        return HttpResponse(json.dumps(dict(this_student.attributes)), content_type="application/json")
+
     
-    return HttpResponseNotFound()
+    return HttpResponseBadRequest()
 
 #/student/(?P<id>\d+)/attribute/(?P<name>[\w-?]+)/'
 # - GET value for specific key :name on student
+# - PUT value for specific key :name on student
+# - POST value for specific key :name on student
 def student_attribute_name(request, id, name):
     if request.method != "GET":
         return HttpResponseBadRequest()
