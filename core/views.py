@@ -1,9 +1,13 @@
+import json
+from bson.objectid import ObjectId
+from bson.errors import InvalidId
+from mongoengine.django.shortcuts import get_document_or_404
+
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest, \
     HttpResponseNotFound, HttpResponseForbidden
 
 from core.models import Student
-from bson.objectid import ObjectId
 
 #default view for app
 def index(request):
@@ -22,12 +26,15 @@ def create_student(request):
         return HttpResponseBadRequest()
 
     new_student = Student()
+    data = json.loads(request.body)
 
-    if 'client_student_id' in request.POST:
-        new_student.client_student_id = request.POST['client_student_id']
+    #import pdb; pdb.set_trace()
 
-    if 'attributes' in request.POST:
-        for attr_name, attr_value in request.POST['attributes']:
+    if 'client_student_id' in data:
+        new_student.client_student_id = data['client_student_id']
+
+    if 'attributes' in data:
+        for attr_name, attr_value in data['attributes'].items():
             new_student.attributes[attr_name] = attr_value
 
     new_student.save()
@@ -40,7 +47,12 @@ def student(request, id):
     if request.method != "GET":
         return HttpResponseBadRequest()
 
-    this_student = Student.objects(pk=ObjectId(id))
+    try:
+        id = ObjectId(id)
+    except InvalidId as e:
+        return HttpResponseBadRequest()
+
+    this_student = get_document_or_404(Student, pk=id)
 
     return HttpResponse(this_student.to_json(), content_type="application/json")
 
@@ -53,6 +65,25 @@ def student_attribute(request, id):
     if request.method == "DELETE":
         return HttpResponseBadReqeust()
 
+    if request.method == "POST" or request.method == "PUT":
+        data = json.loads(request.body)
+        
+        import pdb; pdb.set_trace()
+
+        try:
+            id = ObjectId(id)
+        except InvalidId as e:
+           return HttpResponseBadRequest(content_type="application/json")        
+        
+        this_student = get_document_or_404(Student, pk=id)
+        
+        if 'attributes' in data:
+            for attr_name, attr_value in data['attributes'].items():
+                this_student.attributes[attr_name] = attr_value        
+
+        this_student.save()
+        return HttpResponse(this_student.to_json(), content_type="application/json")
+    
     return HttpResponseNotFound()
 
 #/student/(?P<id>\d+)/attribute/(?P<name>[\w-?]+)/'
