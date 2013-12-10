@@ -10,10 +10,12 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'/student/', 'core.views.create_student'),
-    url(r'/student/(?P<id>\d+)/', 'core.views.student'),
-    url(r'/student/(?P<id>\d+)/attribute/', 'core.views.student_attribute'),
-    url(r'/student/(?P<id>\d+)/attribute/(?P<name>[\w-?]+)/', 'core.views.student_attribute_name'),
-    url(r'/student/(?P<id>\d+)/question/(?P<question_id>\d+)/hint/', 'core.views.student_question_hint'),
-    url(r'/student/(?P<id>\d+)/question/(?P<question_id>\d+)/next/', 'core.views.student_question_next')
+    url(r'^student/$', 'core.views.create_student'),
+    url(r'^student/(?P<id>\w+)/$', 'core.views.student'),
+    url(r'^student/(?P<id>\d+)/attribute/$', 'core.views.student_attribute'),
+    url(r'^student/(?P<id>\d+)/attribute/(?P<name>[\w\-?]+)/$', 'core.views.student_attribute_name'),
+    url(r'^student/(?P<id>\d+)/question/(?P<question_id>\d+)/hint/$', 'core.views.student_question_hint'),
+    url(r'^student/(?P<id>\d+)/question/(?P<question_id>\d+)/next/$', 'core.views.student_question_next'),
+
+    url(r'', 'core.views.index'),
 )

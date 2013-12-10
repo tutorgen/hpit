@@ -1,41 +1,43 @@
 import mongoengine as me
 from datetime import datetime
+from django.db.models import signals
 
 # Create your models here.
 class Student(me.Document):
-	attributes = me.ListField(me.StringField)
-	created_at = me.DateTimeField(default=datetime.now)
-	updated_at = me.DateTimeField(default=datetime.now)
+    client_student_id = me.StringField()
+    attributes = me.DictField()
+    created_at = me.DateTimeField(default=datetime.now)
+    updated_at = me.DateTimeField(default=datetime.now)
 
-	@classmethod
+    @classmethod
     def pre_save(cls, sender, document, **kwargs):
         document.updated_at = datetime.now()
 
     
-class QuestionStep(me.Document):
-	skills = me.ListField(me.StringField)
-	created_at = me.DateTimeField(default=datetime.now)
-	updated_at = me.DateTimeField(default=datetime.now)
+class QuestionStep(me.EmbeddedDocument):
+    skills = me.DictField()
+    created_at = me.DateTimeField(default=datetime.now)
+    updated_at = me.DateTimeField(default=datetime.now)
 
-	@classmethod
+    @classmethod
     def pre_save(cls, sender, document, **kwargs):
         document.updated_at = datetime.now()
 
 
-class Question(me.Document):
-	steps = me.ListField(me.EmbeddedDocument(QuestionStep))
-	created_at = me.DateTimeField(default=datetime.now)
-	updated_at = me.DateTimeField(default=datetime.now)
+class Question(me.EmbeddedDocument):
+    steps = me.ListField(me.EmbeddedDocumentField(QuestionStep))
+    created_at = me.DateTimeField(default=datetime.now)
+    updated_at = me.DateTimeField(default=datetime.now)
 
-	@classmethod
+    @classmethod
     def pre_save(cls, sender, document, **kwargs):
         document.updated_at = datetime.now()
 
 
 class Tutor(me.Document):
-	questions = me.ListField(me.EmbeddedDocument(Question))
-	created_at = me.DateTimeField(default=datetime.now)
-	updated_at = me.DateTimeField(default=datetime.now)
+    questions = me.ListField(me.EmbeddedDocumentField(Question))
+    created_at = me.DateTimeField(default=datetime.now)
+    updated_at = me.DateTimeField(default=datetime.now)
 
     @classmethod
     def pre_save(cls, sender, document, **kwargs):
