@@ -81,6 +81,7 @@ def student_attribute(request, id):
 
         this_student.save()
         return HttpResponse(this_student.to_json(), content_type="application/json")
+ 
     elif request.method == "GET":
         return HttpResponse(json.dumps(dict(this_student.attributes)), content_type="application/json")
 
@@ -92,11 +93,41 @@ def student_attribute(request, id):
 # - PUT value for specific key :name on student
 # - POST value for specific key :name on student
 def student_attribute_name(request, id, name):
-    if request.method != "GET":
+
+    if request.method == "GET":
+        #import pdb; pdb.set_trace()
+        try:
+            id = ObjectId(id)
+        except InvalidId as e:
+           return HttpResponseBadRequest(content_type="application/json")
+
+        this_student = get_document_or_404(Student, pk=id)
+
+        #Using .get is the right way because if name doesn't exist on attributes .get returns None
+        attr_value = this_student.attributes.get(name)
+
+        #This is wrong because if 'name' doesn't exist it will throw an exception
+        wrong_way = this_student.attributes['name']     
+        
+        #Either of the following 2 ways work too.
+        # 1st below is only value for mongo
+        #attr_value = this_student['attributes'].get(name)
+
+        return HttpResponse(json.dumps({name: attr_value}), content_type="application/json")
+    
+    elif request.method == "PUT" or request.method == "POST":
+
+
+        return HttpResponse(json.dumps({name: attr_value}), content_type="application/json")
+    
+    else:
         return HttpResponseBadRequest()
 
-    return HttpResponseNotFound()
-        
+
+
+    
+
+
 #/student/(?P<id>\d+)/question/(?P<question_id>\d+)/
 # - GET next hint for the student
 def student_question_hint(request, id, question_id):
