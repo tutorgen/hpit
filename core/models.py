@@ -1,49 +1,53 @@
-import mongoengine as me
-from datetime import datetime
-from django.db.models import signals
+from django.db import models
 
 # Create your models here.
-class Student(me.Document):
-    client_student_id = me.StringField()
-    attributes = me.DictField()
-    created_at = me.DateTimeField(default=datetime.now)
-    updated_at = me.DateTimeField(default=datetime.now)
-
-    @classmethod
-    def pre_save(cls, sender, document, **kwargs):
-        document.updated_at = datetime.now()
-
-    
-class QuestionStep(me.EmbeddedDocument):
-    skills = me.DictField()
-    created_at = me.DateTimeField(default=datetime.now)
-    updated_at = me.DateTimeField(default=datetime.now)
-
-    @classmethod
-    def pre_save(cls, sender, document, **kwargs):
-        document.updated_at = datetime.now()
+class Student(models.Model):
+    client_student_id = models.CharField(max_length=300)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
-class Question(me.EmbeddedDocument):
-    steps = me.ListField(me.EmbeddedDocumentField(QuestionStep))
-    created_at = me.DateTimeField(default=datetime.now)
-    updated_at = me.DateTimeField(default=datetime.now)
 
-    @classmethod
-    def pre_save(cls, sender, document, **kwargs):
-        document.updated_at = datetime.now()
+class StudentAttribute(models.Model):
+    student = models.ForeignKey(Student)
+    name = models.CharField(max_length=300)
+    value = models.CharField(max_length=4000)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
-class Tutor(me.Document):
-    questions = me.ListField(me.EmbeddedDocumentField(Question))
-    created_at = me.DateTimeField(default=datetime.now)
-    updated_at = me.DateTimeField(default=datetime.now)
 
-    @classmethod
-    def pre_save(cls, sender, document, **kwargs):
-        document.updated_at = datetime.now()
+class Tutor(models.Model):
+    name = models.CharField(max_length=300)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-signals.pre_save.connect(Student.pre_save, sender=Student)
-signals.pre_save.connect(QuestionStep.pre_save, sender=QuestionStep)
-signals.pre_save.connect(Question.pre_save, sender=Question)
-signals.pre_save.connect(Tutor.pre_save, sender=Tutor)
+    def __unicode__(self):
+        return unicode(self.name)
+
+
+
+class Question(models.Model):
+    tutor = models.ForeignKey(Tutor)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return unicode(self.description)
+
+
+
+class QuestionStep(models.Model):
+    question = models.ForeignKey(Question)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+
+class QuestionSkill(models.Model):
+    name = models.CharField(max_length=300)
+    value = models.CharField(max_length=4000)
+    question_step = models.ForeignKey(QuestionStep)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
