@@ -21,6 +21,7 @@ urlpatterns = patterns('',
 
     url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 
     (r'^api/', include(v1_api.urls)),
 

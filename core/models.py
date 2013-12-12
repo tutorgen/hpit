@@ -12,7 +12,7 @@ class Student(models.Model):
 
 
 class StudentAttribute(models.Model):
-    student = models.ForeignKey(Student)
+    student = models.ForeignKey(Student, related_name="attributes")
     name = models.CharField(max_length=300)
     value = models.CharField(max_length=4000)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -59,6 +59,3 @@ class QuestionSkill(models.Model):
     question_step = models.ForeignKey(QuestionStep)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    def __unicode__(self):
-        return unicode(self.name)
