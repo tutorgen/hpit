@@ -6,6 +6,9 @@ class Student(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __unicode__(self):
+        return unicode(self.client_student_id)
+
 
 
 class StudentAttribute(models.Model):
@@ -14,6 +17,9 @@ class StudentAttribute(models.Model):
     value = models.CharField(max_length=4000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return unicode(self.name)
 
 
 
@@ -43,6 +49,8 @@ class QuestionStep(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __unicode__(self):
+        return unicode(self.question)
 
 
 class QuestionSkill(models.Model):
@@ -51,3 +59,6 @@ class QuestionSkill(models.Model):
     question_step = models.ForeignKey(QuestionStep)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return unicode(self.name)
