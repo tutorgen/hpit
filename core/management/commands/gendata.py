@@ -13,6 +13,7 @@ ATTRIBUTES = [
 ]
 
 SKILLS = ["Subtraction", "Addition", "Critical Thinking", "Visualization", "Comprehension"]
+STEPS = ["Add to both sides", "Subtract from both sides", "Multiply both sides", "Divide both sides", "Combine terms", "Apply associative property"]
 
 TUTOR_NAMES_F = ["Generic", "General", "Specialized", "Independent", "Focused"]
 TUTOR_NAMES_T = ["Modern Art", "World History", "Math", "Geology", "Astronomy", "Warfare"]
@@ -66,6 +67,7 @@ def gen_question(tutor):
 def gen_question_step(question):
     step = QuestionStep()
     step.question = question
+    step.description = random.choice(STEPS)
     step.save()
     return step
 

@@ -50,6 +50,14 @@ class QuestionSkillResource(ModelResource):
     question_step = fields.ForeignKey(QuestionStepResource, 'question_step')
 
     class Meta:
-        queryset = QuestionStep.objects.all()
+        queryset = QuestionSkill.objects.all()
         resource_name = 'question_skill'
+        authorization = GuardianAuthorization()
+
+
+class HpitTransactionResource(ModelResource):
+
+    class Meta:
+        queryset = HpitTransaction.objects.all()
+        resource_name = 'hpit_transaction'
         authorization = GuardianAuthorization()
