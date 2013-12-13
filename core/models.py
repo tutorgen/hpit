@@ -65,7 +65,7 @@ class QuestionSkill(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return unicode(self.name)    
+        return unicode(self.name)
 
 
 class HpitTransaction(models.Model):

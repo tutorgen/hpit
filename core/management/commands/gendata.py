@@ -72,10 +72,10 @@ def gen_question_step(question):
     return step
 
 
-def generate_question_skill(step, skill):
+def generate_question_skill(step, skill_str):
     skill = QuestionSkill()
     skill.question_step = step
-    skill.name = skill
+    skill.name = skill_str
     skill.value = random.choice(range(6))
     skill.save()
     return skill
