@@ -19,11 +19,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '&*pl%h9vva1n3or#dcb5sapdn&(&*48_0gejbb^=etdgj40!%!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["172.16.98.203"]
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'oauth2_provider',
     'corsheaders',
+    'gunicorn',
     'core',
 )
 
@@ -70,8 +71,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'tutorgen.db3'
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'hpit_production',
+	'USER': 'hpitserver',
+	'PASSWORD': 'DragonBeastMan',
+	'HOST': 'localhost',
     }
 }
 
