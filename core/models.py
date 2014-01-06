@@ -37,7 +37,7 @@ class Tutor(models.Model):
 
 
 class Question(models.Model):
-    tutor = models.ForeignKey(Tutor)
+    tutor = models.ForeignKey(Tutor, related_name="questions")
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -22,6 +22,8 @@ class StudentAttributeResource(ModelResource):
 
 
 class TutorResource(ModelResource):
+    questions = fields.ToManyField('core.api.QuestionResource', 'questions', full=True)
+
     class Meta:
         queryset = Tutor.objects.all()
         resource_name = 'tutor'
