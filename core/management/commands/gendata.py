@@ -8,7 +8,7 @@ from core.models import *
 random.seed(datetime.now())
 
 ATTRIBUTES = [
-    'boredom', 'grit', 'topic_pref', 'sadness', 'emotional_damage', 
+    'boredom', 'grit', 'topic_pref', 'sadness', 'emotional_impairment', 
     'hit_points', 'learning_baggage'
 ]
 
@@ -17,10 +17,10 @@ STEPS = ["Add to both sides", "Subtract from both sides", "Multiply both sides",
 
 TUTOR_NAMES_F = ["Generic", "General", "Specialized", "Independent", "Focused"]
 TUTOR_NAMES_T = ["Modern Art", "World History", "Math", "Geology", "Astronomy", "Warfare"]
-TUTOR_NAMES_L = ["Tutor", "Instructor", "Teacher", "Professor"]
-TUTOR_NAMES_V = ["of Awesome", "of great insight", "the younger", "P.O.E.E.", "the great and knowing"]
+TUTOR_NAMES_L = ["Tutor", "Instruction", "Teaching", "Professor"]
+TUTOR_NAMES_V = ["of wisdom", "of great insight", "for professional readiness", "ABCs", "the great and knowing"]
 
-GENERAL_DESCRIPTION = "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis."
+GENERAL_DESCRIPTION = "ombie ipsum reversus ab viral inferno, nam rice grikes malum cerebro. De carne lumbering animata corpora quaeritis."
 
 def gen_student():
     print("Generating New Student")
